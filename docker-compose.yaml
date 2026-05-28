@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  ft-logtime-mqtt:
+    network_mode: "host"
+    container_name: ft-logtime-mqtt
+    image: node:22-alpine
+    restart: unless-stopped
+    working_dir: /app
+
+    volumes:
+      - .:/app
+
+    command: >
+      sh -c "
+        npm install mqtt &&
+        node app.js
+      "
+
+    environment:
+      # =========================
+      # API 42
+      # =========================
+      FT_CLIENT_ID: "u-s4t2ud-xxxxx"
+      FT_CLIENT_SECRET: "s-s4t2ud-xxxx"
+      FT_LOGIN: "xxxx"
+
+      # =========================
+      # MQTT
+      # =========================
+      MQTT_HOST: "192.168.1.10"
+      MQTT_PORT: "1883"
+      MQTT_USERNAME: "mqtt-user"
+      MQTT_PASSWORD: "mqtt-password"
+      MQTT_TOPIC: "42/logtime"
+
+      # =========================
+      # Fréquence de mise à jour
+      # 300000 ms = 5 minutes
+      # =========================
+      UPDATE_INTERVAL: "300000"
